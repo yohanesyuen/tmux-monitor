@@ -182,7 +182,9 @@ def new_window(session: str, name: str = "", start_dir: str = "") -> str:
         name: optional window name
         start_dir: starting directory (defaults to session's working dir)
     """
-    cmd = ["tmux", "new-window", "-t", session]
+    # Trailing colon forces target-session resolution; a bare numeral like "2"
+    # is otherwise ambiguous with a window index in the current session.
+    cmd = ["tmux", "new-window", "-t", f"{session}:"]
     if name:
         cmd += ["-n", name]
     if start_dir:
